@@ -1,15 +1,25 @@
 name: Label pull request
 on:
   pull_request:
-    paths:
-      - 'app/group_vars/**.yaml'
+    branches:
+      - master
 jobs:
   label_pr:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
     steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            studio:
+              - 'app/group_vars/**.yaml'
+            non-studio:
+              - 'app/identidock.py'
       - uses: actions/github-script@v6
+        if: steps.filter.outputs.studio == 'true' && steps.filter.outputs.non-studio == 'false'
         with:
           script: |
             github.rest.issues.addLabels({
@@ -17,4 +27,14 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               labels: ["studio_change"]
+            })
+      - uses: actions/github-script@v6
+        if: steps.filter.outputs.non-studio == 'true'
+        with:
+          script: |
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ["common_change"]
             })
