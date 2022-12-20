@@ -8,6 +8,8 @@ cache = redis.StrictRedis( host='redis', port=6379, db=0 )
 salt = "my_salt_yep_1238vf7&"
 default_name = 'Joe Bloggs'
 
+# Just to check labels
+
 @app.route('/', methods=['GET', 'POST'])
 def mainpage():
 
