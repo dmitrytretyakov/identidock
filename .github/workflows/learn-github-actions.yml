@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - master
+    types: [created, edited]
 jobs:
   label_pr:
     runs-on: ubuntu-latest
