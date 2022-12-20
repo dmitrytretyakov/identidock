@@ -1,0 +1,20 @@
+name: Label pull request
+on:
+  pull_request:
+    paths:
+      - 'app/group_vars/**.yaml'
+jobs:
+  label_pr:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ["studio_change"]
+            })
