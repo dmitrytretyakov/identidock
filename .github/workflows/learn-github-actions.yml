@@ -6,6 +6,7 @@ on:
     types: 
       - opened
       - edited
+      - synchronize
 jobs:
   label_pr:
     runs-on: ubuntu-latest
